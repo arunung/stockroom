@@ -1,0 +1,30 @@
+<div class="field-bg" aria-hidden="true"><i></i><i></i></div>
+<div class="app" id="app">
+  <aside class="side" id="side" aria-label="เมนูหลัก">
+    <div class="brand">
+      <svg class="brand-mark" viewBox="0 0 48 48" aria-hidden="true"><rect x="2" y="2" width="44" height="44" rx="13" fill="#f0900c"/><path d="M12 19l12-6 12 6v12l-12 6-12-6z" fill="none" stroke="#1b1100" stroke-width="2.6" stroke-linejoin="round"/><path d="M12 19l12 6 12-6M24 25v12" fill="none" stroke="#1b1100" stroke-width="2.6" stroke-linejoin="round"/></svg>
+      <div><b>STOCKROOM</b><span>ระบบจัดการคลังสินค้า</span></div>
+    </div>
+    <nav class="nav" id="nav" aria-label="หน้าหลัก"></nav>
+    <div class="side-foot">
+      <div class="who" id="who"></div>
+      <div class="sync" id="sync"><span class="dot off"></span><span>กำลังเชื่อมต่อ…</span></div>
+      <button class="btn sm ghost" id="themeBtn" type="button" style="color:var(--side-ink);border-color:var(--side-line)"><span id="themeIco"></span><span id="themeTxt">ธีมสว่าง / มืด</span></button>
+    </div>
+  </aside>
+  <div class="scrim" id="scrim"></div>
+  <div class="main">
+    <header class="top">
+      <button class="icon-btn menu-btn" id="menuBtn" type="button" aria-label="เปิดเมนู"></button>
+      <div style="min-width:0"><span class="crumb" id="crumb">INVENTORY</span><h1 id="pageTitle">ภาพรวม</h1></div>
+      <span class="sp"></span>
+      <button class="search-btn" id="cmdBtn" type="button" aria-label="ค้นหา"><span id="cmdIco" style="display:grid"></span><span class="st">ค้นหาสินค้า, Location, คำสั่ง…</span><kbd>Ctrl K</kbd></button>
+    </header>
+    <main class="view enter" id="view" aria-live="polite"></main>
+  </div>
+</div>
+<div id="modalRoot"></div>
+<div id="drawerRoot"></div>
+<div id="cmdRoot"></div>
+<div id="toasts" role="status" aria-live="polite"></div>
+<div class="tip" id="tip" role="presentation"></div>

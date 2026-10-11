@@ -1,0 +1,22 @@
+{
+  "name": "stockroom",
+  "version": "1.0.0",
+  "description": "Stockroom — inventory management (Thai UI) on Supabase + Cloudflare Pages",
+  "directories": {
+    "test": "test"
+  },
+  "scripts": {
+    "build": "node build.mjs",
+    "serve": "node build.mjs && npx --yes serve dist -l 8080",
+    "test:rls": "bash test/run-rls.sh",
+    "test:e2e": "python3 test/e2e.py"
+  },
+  "dependencies": {
+    "@supabase/supabase-js": "^2.117.3"
+  },
+  "private": true,
+  "type": "module",
+  "engines": {
+    "node": ">=20"
+  }
+}

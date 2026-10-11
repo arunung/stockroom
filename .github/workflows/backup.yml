@@ -1,0 +1,35 @@
+# (ทางเลือก) สำรองฐานข้อมูลรายสัปดาห์ — Supabase Free ไม่มี daily backup ให้
+# ⚠ ยังไม่ได้ทดสอบกับโปรเจกต์จริง — ทดสอบด้วยปุ่ม "Run workflow" ก่อนพึ่งพา
+# Secret: SUPABASE_DB_URL = Connection string แบบ "Session pooler" (Dashboard → Connect) ใส่รหัสผ่านฐานข้อมูลแล้ว
+# ไฟล์ backup เก็บเป็น artifact 30 วัน (repo ควรเป็น private — ข้อมูลสต็อกอยู่ในไฟล์นี้)
+name: backup
+on:
+  schedule:
+    - cron: '41 19 * * 0'   # อาทิตย์ 19:41 UTC = จันทร์ 02:41 เวลาไทย
+  workflow_dispatch:
+permissions: {}
+jobs:
+  dump:
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    steps:
+      - name: Install PostgreSQL client 17
+        run: |
+          sudo install -d /usr/share/postgresql-common/pgdg
+          sudo curl -fsSL -o /usr/share/postgresql-common/pgdg/apt.postgresql.org.asc https://www.postgresql.org/media/keys/ACCC4CF8.asc
+          echo "deb [signed-by=/usr/share/postgresql-common/pgdg/apt.postgresql.org.asc] https://apt.postgresql.org/pub/repos/apt $(. /etc/os-release; echo $VERSION_CODENAME)-pgdg main" | sudo tee /etc/apt/sources.list.d/pgdg.list
+          sudo apt-get update -qq && sudo apt-get install -y -qq postgresql-client-17
+      - name: pg_dump (public schema + auth.users/profiles data)
+        env:
+          SUPABASE_DB_URL: ${{ secrets.SUPABASE_DB_URL }}
+        run: |
+          set -euo pipefail
+          test -n "$SUPABASE_DB_URL" || { echo "::error::ตั้ง secret SUPABASE_DB_URL ก่อน"; exit 1; }
+          d=$(date -u +%Y%m%d)
+          /usr/lib/postgresql/17/bin/pg_dump "$SUPABASE_DB_URL" --schema=public --no-owner --no-privileges -Fc -f "stockroom-$d.dump"
+          ls -l "stockroom-$d.dump"
+      - uses: actions/upload-artifact@v4
+        with:
+          name: stockroom-db-backup
+          path: stockroom-*.dump
+          retention-days: 30
